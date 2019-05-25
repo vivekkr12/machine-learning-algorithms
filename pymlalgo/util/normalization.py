@@ -10,6 +10,7 @@ class Normalizer:
 
     FEATURES = 'f'
     LABELS = 'l'
+    __VALID_TYPES__ = [FEATURES, LABELS]
 
     def __init__(self, train, type_, eps=0.0001):
         """
@@ -23,6 +24,10 @@ class Normalizer:
                     0 errors
         """
         self.train = train
+
+        if type_ not in Normalizer.__VALID_TYPES__:
+            raise ValueError('type_ must be one of {}'.format(Normalizer.__VALID_TYPES__))
+
         axis = 0 if type_ == Normalizer.LABELS else 1
         self.train_mean = np.mean(self.train, axis=axis).reshape(-1, 1)
         self.train_sd = np.std(self.train, axis=axis).reshape(-1, 1) + eps
