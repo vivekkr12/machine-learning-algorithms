@@ -34,7 +34,7 @@ class RidgeRegression:
 
         # arrays to contain costs, coefficients, and gradients after each iteration
         self.cost_history = np.zeros(max_iter)
-        self.grad_history = np.zeros(max_iter)
+        self.grad_magnitude_history = np.zeros(max_iter)
         self.beta_history = np.zeros((self.d, max_iter))
 
         # initialize to an arbitrary learning rate
@@ -53,25 +53,30 @@ class RidgeRegression:
         initial_learning_rate = 1 / lipschitz
         return initial_learning_rate
 
-    def backtracking(self, beta, alpha=0.5, gamma=0.8):
+    def backtracking(self, beta, grad, grad_magnitude, cost, alpha=0.5, gamma=0.8):
         """
         Computes optimal learning rate for each iteration.
         alpha and gamma are constants and the default values
         had proven to work well in most scenarios.
 
+        Parameters grad, grad_magnitude and cost are passed instead of being
+        calculated in the method because they are already calculated in during
+        gradient descent
+
         :param beta: coefficients after last iteration
+        :param grad: grad at the given beta
+        :param grad_magnitude: grad magnitude at the given beta
+        :param cost: cost at the given beta
         :param alpha: a constant - default 0.5
         :param gamma: a constant - default 0.8
         :return: optimal learning rate
         """
         learning_rate = self.init_learning_rate
-        grad_beta = self.grad_history[-1]  # Gradient at x
-        grad_magnitude = self.grad_history[-1]  # Norm of the gradient at x
         condition = False
         i = 0  # Iteration counter
         while condition is False and i < self.backtracking_max_iter:
-            lhs = self.compute_cost(beta - learning_rate * grad_beta)
-            rhs = self.cost_history[-1] - alpha * learning_rate * grad_magnitude ** 2
+            lhs = self.compute_cost(beta - learning_rate * grad)
+            rhs = cost - alpha * learning_rate * grad_magnitude ** 2
             if lhs <= rhs:
                 condition = True
             elif i == self.backtracking_max_iter - 1:
@@ -126,13 +131,13 @@ class RidgeRegression:
 
         while condition is False and i < self.max_iter:
 
-            learning_rate = self.init_learning_rate
             grad_theta = self.compute_grad(beta)
             cost = self.compute_cost(beta)
             grad_magnitude = np.linalg.norm(grad_theta, ord=2)
+            learning_rate = self.backtracking(beta, grad_theta, grad_magnitude, cost)
             self.beta_history[:, i] = beta.flatten()
             self.cost_history[i] = cost
-            self.grad_history[i] = grad_magnitude
+            self.grad_magnitude_history[i] = grad_magnitude
 
             if grad_magnitude < self.min_grad:
                 condition = True
@@ -146,7 +151,7 @@ class RidgeRegression:
 
         self.beta_history = self.beta_history[:, 0:i]
         self.cost_history = self.cost_history[0:i]
-        self.grad_history = self.grad_history[0:i]
+        self.grad_magnitude_history = self.grad_magnitude_history[0:i]
         self.beta = beta
 
     def train(self, init_beta=None):
