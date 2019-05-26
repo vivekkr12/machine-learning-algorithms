@@ -9,3 +9,5 @@
 *txt text eol=lf
 .git* text eol=lf
 .editor* text eol=lf
+.cov* text eol=lf
+.travis* text eol=lf

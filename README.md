@@ -1,5 +1,5 @@
 # Machine Learning Algorithms
-[![Build Status](https://travis-ci.com/vivekkr12/machine-learning-algorithms.svg?branch=master)](https://travis-ci.com/vivekkr12/machine-learning-algorithms)
+[![Build Status](https://travis-ci.com/vivekkr12/machine-learning-algorithms.svg?branch=master)](https://travis-ci.com/vivekkr12/machine-learning-algorithms) [![Coverage Status](https://coveralls.io/repos/github/vivekkr12/machine-learning-algorithms/badge.svg?branch=master)](https://coveralls.io/github/vivekkr12/machine-learning-algorithms?branch=master)
 
 Implementation of popular machine learning algorithms in python
 
