@@ -36,11 +36,11 @@ class RigdeRegressionTest(unittest.TestCase):
         expected_coef = np.array([0.4590115, 0.28894745, 0.27342446, 0.21193167, 0.29020445,
                                  0.26846985, 0.38304797, 0.12870089, 0.42763333, 0.0962281]).reshape(-1, 1)
         coef = self.model.beta
-        np.testing.assert_array_almost_equal(expected_coef, coef)
+        np.testing.assert_array_almost_equal(expected_coef, coef, decimal=4)
 
     def test_final_cost(self):
         expected_final_cost = 0.026745657020640256
-        self.assertEqual(expected_final_cost, self.model.cost_history[-1])
+        self.assertAlmostEqual(expected_final_cost, self.model.cost_history[-1], places=4)
 
     def test_predictions_shape(self):
         predictions = self.model.predict(self.x_test_std)
@@ -49,9 +49,9 @@ class RigdeRegressionTest(unittest.TestCase):
     def test_train_score(self):
         expected_train_score = 0.9731618072817436
         train_score = self.model.r_squared(self.x_train_std, self.y_train_std)
-        self.assertAlmostEqual(expected_train_score, train_score)
+        self.assertAlmostEqual(expected_train_score, train_score, places=4)
 
     def test_test_score(self):
         expected_test_score = 0.9773325023618751
         test = self.model.r_squared(self.x_test_std, self.y_test_std)
-        self.assertAlmostEqual(expected_test_score, test)
+        self.assertAlmostEqual(expected_test_score, test, places=4)
