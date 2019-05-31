@@ -1,7 +1,7 @@
 import numpy as np
 
 
-class Normalizer:
+class Standardizer:
     """
     Normalize the data to mean = 0 and standard deviation = 1.
 
@@ -25,12 +25,12 @@ class Normalizer:
         """
         self.train = train
 
-        if type_ not in Normalizer.__VALID_TYPES__:
-            raise ValueError('type_ must be one of {}'.format(Normalizer.__VALID_TYPES__))
+        if type_ not in Standardizer.__VALID_TYPES__:
+            raise ValueError('type_ must be one of {}'.format(Standardizer.__VALID_TYPES__))
 
-        axis = 0 if type_ == Normalizer.LABELS else 1
+        axis = 0 if type_ == Standardizer.LABELS else 1
         self.train_mean = np.mean(self.train, axis=axis).reshape(-1, 1)
         self.train_sd = np.std(self.train, axis=axis).reshape(-1, 1) + eps
 
-    def normalize(self, data):
+    def standardize(self, data):
         return (data - self.train_mean) / self.train_sd

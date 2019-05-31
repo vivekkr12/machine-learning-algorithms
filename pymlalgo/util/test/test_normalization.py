@@ -2,7 +2,7 @@ import unittest
 
 import numpy as np
 
-from pymlalgo.util.normalization import Normalizer
+from pymlalgo.util.standardization import Standardizer
 
 
 class NormalizerTest(unittest.TestCase):
@@ -22,36 +22,36 @@ class NormalizerTest(unittest.TestCase):
         self.labels_norm_expected = (self.labels - self.labels_mean_expected) / self.labels_sd_expected
 
     def test_type_f(self):
-        x_normalizer = Normalizer(self.features, type_='f')
-        self.assertIsInstance(x_normalizer, Normalizer)
+        x_normalizer = Standardizer(self.features, type_='f')
+        self.assertIsInstance(x_normalizer, Standardizer)
 
     def test_type_l(self):
-        y_normalizer = Normalizer(self.labels, type_='l')
-        self.assertIsInstance(y_normalizer, Normalizer)
+        y_normalizer = Standardizer(self.labels, type_='l')
+        self.assertIsInstance(y_normalizer, Standardizer)
 
     def test_invalid_type(self):
         with self.assertRaises(ValueError):
-            Normalizer(self.features, type_='x')
+            Standardizer(self.features, type_='x')
 
     def test_features_std_shape(self):
-        x_normalizer = Normalizer(self.features, type_='f')
+        x_normalizer = Standardizer(self.features, type_='f')
         self.assertTupleEqual(x_normalizer.train_sd.shape, (self.d, 1))
 
     def test_labels_mean_shape(self):
-        y_normalizer = Normalizer(self.labels, type_='l')
+        y_normalizer = Standardizer(self.labels, type_='l')
         self.assertTupleEqual(y_normalizer.train_mean.shape, (1, 1))
 
     def test_feature_normalization(self):
-        x_normalizer = Normalizer(self.features, type_='f')
-        features_norm = x_normalizer.normalize(self.features)
+        x_normalizer = Standardizer(self.features, type_='f')
+        features_norm = x_normalizer.standardize(self.features)
         self.assertTrue(np.array_equal(features_norm, self.features_norm_expected))
 
     def test_label_normalization(self):
-        y_normalizer = Normalizer(self.labels, type_='l')
-        labels_norm = y_normalizer.normalize(self.labels)
+        y_normalizer = Standardizer(self.labels, type_='l')
+        labels_norm = y_normalizer.standardize(self.labels)
         self.assertTrue(np.array_equal(labels_norm, self.labels_norm_expected))
 
     def test_zero_std_normalization(self):
         data = np.ones(shape=(3, 10))
-        normalizer = Normalizer(data, type_='f')
+        normalizer = Standardizer(data, type_='f')
         self.assertFalse(np.any(normalizer.train_sd == 0.0))

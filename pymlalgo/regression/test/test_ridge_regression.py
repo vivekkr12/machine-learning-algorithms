@@ -4,7 +4,7 @@ import numpy as np
 
 from pymlalgo.util.model_selection import train_test_split
 from pymlalgo.regression.ridge_regression import RidgeRegression
-from pymlalgo.util.normalization import Normalizer
+from pymlalgo.util.standardization import Standardizer
 
 
 class RigdeRegressionTest(unittest.TestCase):
@@ -21,13 +21,13 @@ class RigdeRegressionTest(unittest.TestCase):
 
         x_train, x_test, y_train, y_test = train_test_split(x, y, random_state=7, test_size=0.25)
 
-        y_normalizer = Normalizer(x_train, Normalizer.FEATURES)
-        cls.x_train_std = y_normalizer.normalize(x_train)
-        cls.x_test_std = y_normalizer.normalize(x_test)
+        y_normalizer = Standardizer(x_train, Standardizer.FEATURES)
+        cls.x_train_std = y_normalizer.standardize(x_train)
+        cls.x_test_std = y_normalizer.standardize(x_test)
 
-        y_normalizer = Normalizer(y_train, Normalizer.LABELS)
-        cls.y_train_std = y_normalizer.normalize(y_train)
-        cls.y_test_std = y_normalizer.normalize(y_test)
+        y_normalizer = Standardizer(y_train, Standardizer.LABELS)
+        cls.y_train_std = y_normalizer.standardize(y_train)
+        cls.y_test_std = y_normalizer.standardize(y_test)
 
         cls.model = RidgeRegression(cls.x_train_std, cls.y_train_std, lambd=0.1 / cls.n, min_grad=0.00001)
         cls.model.train()
