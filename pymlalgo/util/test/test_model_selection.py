@@ -32,3 +32,11 @@ class ModelSelectionTest(unittest.TestCase):
         self.assertTupleEqual(x_test.shape, (test_n, d), 'Shape of x_test did not match')
         self.assertTupleEqual(y_train.shape, (train_n, 1), 'Shape of y_train did not match')
         self.assertTupleEqual(y_test.shape, (test_n, 1), 'Shape of y_test did not match')
+
+    def test_one_d_shape_change(self):
+        y = self.y.flatten()
+        test_size = 0.2
+        train_n, test_n, d = 16, 4, 3
+        x_train, x_test, y_train, y_test = train_test_split(self.x, y, test_size=test_size)
+        self.assertTupleEqual(y_train.shape, (train_n, 1), 'Shape of y_train did not change 2d')
+        self.assertTupleEqual(y_test.shape, (test_n, 1), 'Shape of y_test did not change to 2d')
