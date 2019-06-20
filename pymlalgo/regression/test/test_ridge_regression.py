@@ -7,7 +7,7 @@ from pymlalgo.regression.ridge_regression import RidgeRegression
 from pymlalgo.util.standardization import Standardizer
 
 
-class RigdeRegressionTest(unittest.TestCase):
+class RidgeRegressionTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):

@@ -12,7 +12,7 @@ class RidgeRegression:
         """
         Initializes and instance of RidgeRegression
 
-        :param x_train: training features of shape (n, s)
+        :param x_train: training features of shape (n, d)
         :param y_train: training labels of shape (n, 1)
         :param lambd: regularization parameter, default value 0.1
         :param min_grad: minimum slope to stop gradient descent, default - 0.001
