@@ -22,12 +22,12 @@ class StandardizerTest(unittest.TestCase):
         self.labels_standardized_expected = (self.labels - self.labels_mean_expected) / self.labels_sd_expected
 
     def test_type_features(self):
-        x_normalizer = Standardizer(self.features)
-        self.assertIsInstance(x_normalizer, Standardizer)
+        x_standardizer = Standardizer(self.features)
+        self.assertIsInstance(x_standardizer, Standardizer)
 
     def test_type_labels(self):
-        y_normalizer = Standardizer(self.labels)
-        self.assertIsInstance(y_normalizer, Standardizer)
+        y_standardizer = Standardizer(self.labels)
+        self.assertIsInstance(y_standardizer, Standardizer)
 
     def test_invalid_shape(self):
         with self.assertRaises(ValueError):
