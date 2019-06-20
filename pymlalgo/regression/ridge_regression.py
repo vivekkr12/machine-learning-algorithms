@@ -48,8 +48,8 @@ class RidgeRegression:
 
         :return: initial learning rate
         """
-        eigen_values = np.real(np.linalg.eigvals(np.cov(self.x_train.T)))
-        lipschitz = np.max(eigen_values) + self.lambd
+        eigen_values = np.linalg.eigvalsh(np.cov(self.x_train.T))
+        lipschitz = eigen_values[-1] + self.lambd
         initial_learning_rate = 1 / lipschitz
         return initial_learning_rate
 
