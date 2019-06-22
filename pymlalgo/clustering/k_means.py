@@ -104,7 +104,7 @@ class KMeans:
         :param xi: the sample
         :return: the cluster index
         """
-        distances = np.linalg.norm(self.mu - xi, axis=1)
+        distances = np.square(np.linalg.norm(self.mu - xi, axis=1))
         xi_label = np.argmin(distances)
         return xi_label
 
