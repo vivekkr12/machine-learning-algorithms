@@ -6,3 +6,4 @@ Implementation of popular machine learning algorithms in python
 |Algorithm|Math|Implementation|Demo|
 |---------|------|--------------|----|
 |Ridge Regression|[Theory and Derivation](theory/ridge_regression.ipynb)|[Python Implementation](pymlalgo/regression/ridge_regression.py)|[Demo](demo/ridge_regression_demo.ipynb)|
+|K Means|[Theory and Algorithm](theory/k_means.ipynb)|[Python Implementation](pymlalgo/clustering/k_means.py)|[Demo](demo/k_means_demo.ipynb)|
