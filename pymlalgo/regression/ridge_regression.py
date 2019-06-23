@@ -40,6 +40,7 @@ class RidgeRegression:
         # initialize to an arbitrary learning rate
         self.init_learning_rate = 0.001
         self.w = None
+        self.n_iter = 0
 
     def __compute_initial_learning_rate__(self):
         """
@@ -127,7 +128,7 @@ class RidgeRegression:
             theta = init_w
 
         condition = False
-        i = 0
+        itr = 0
 
         while condition is False:
 
@@ -135,23 +136,25 @@ class RidgeRegression:
             cost = self.compute_cost(beta)
             grad_magnitude = np.linalg.norm(grad_theta, ord=2)
             learning_rate = self.backtracking(beta, grad_theta, grad_magnitude, cost)
-            self.w_history[:, i] = beta.flatten()
-            self.cost_history[i] = cost
-            self.grad_magnitude_history[i] = grad_magnitude
+            self.w_history[:, itr] = beta.flatten()
+            self.cost_history[itr] = cost
+            self.grad_magnitude_history[itr] = grad_magnitude
 
             if grad_magnitude < self.min_grad:
                 condition = True
-            elif i == self.max_iter - 1:
+                self.n_iter = itr + 1
+            elif itr == self.max_iter - 1:
                 self.logger.warning('max iteration for fast gradient descent reached before condition became true')
                 condition = True
+                self.n_iter = itr + 1
             else:
-                i += 1
+                itr += 1
                 beta = theta - learning_rate * grad_theta
-                theta = beta + i / (i + 3) * (beta - self.w_history[:, (i - 1)].reshape(self.d, 1))
+                theta = beta + itr / (itr + 3) * (beta - self.w_history[:, (itr - 1)].reshape(self.d, 1))
 
-        self.w_history = self.w_history[:, 0:i]
-        self.cost_history = self.cost_history[0:i]
-        self.grad_magnitude_history = self.grad_magnitude_history[0:i]
+        self.w_history = self.w_history[:, 0:itr]
+        self.cost_history = self.cost_history[0:itr]
+        self.grad_magnitude_history = self.grad_magnitude_history[0:itr]
         self.w = beta
 
     def train(self, init_w=None):
