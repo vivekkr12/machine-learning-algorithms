@@ -86,9 +86,10 @@ class KMeansTest(unittest.TestCase):
                             [5, 5],
                             [10, 10],
                             [15, 15]])
-        model = KMeans(self.x, self.k, initialization=init_mu)
+        model = KMeans(self.x, self.k)
         model.find_kpp_centroids = MagicMock()
         model.find_random_centroids = MagicMock()
+        model.train(init_mu)
 
         self.assertFalse(model.find_kpp_centroids.called)
         self.assertFalse(model.find_random_centroids.called)
