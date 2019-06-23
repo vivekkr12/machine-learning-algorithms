@@ -55,3 +55,14 @@ class RidgeRegressionTest(unittest.TestCase):
         expected_test_score = 0.9767454565709043
         test = self.model.r_squared(self.x_test_std, self.y_test_std)
         self.assertAlmostEqual(expected_test_score, test, places=4)
+
+    def test_max_iter_exceeded(self):
+        model = RidgeRegression(self.x_train_std, self.y_train_std, max_iter=10, backtracking_max_iter=10)
+        model.train()
+        self.assertEqual(model.n_iter, 10, 'Number of iterations must be 10')
+
+    def test_train_with_init_weight(self):
+        model = RidgeRegression(self.x_train_std, self.y_train_std, lambd=0.1 / self.n)
+        model.train(self.model.w)
+        # Since initial weight is from final trained model, n_iter must be very less
+        self.assertLess(model.n_iter, self.model.n_iter)
