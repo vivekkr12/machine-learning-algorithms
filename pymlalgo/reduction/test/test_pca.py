@@ -2,7 +2,7 @@ import unittest
 
 import numpy as np
 
-from pymlalgo.pca.pca import PCA
+from pymlalgo.reduction.pca import PCA
 
 
 class PCATest(unittest.TestCase):
