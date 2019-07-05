@@ -7,6 +7,7 @@ Implementation of common machine learning algorithms from scratch in Python
 |---------|------|--------------|----|
 |Ridge Regression|[Theory and Derivation](theory/ridge_regression.ipynb)|[Python Implementation](pymlalgo/regression/ridge_regression.py)|[Demo](demo/ridge_regression_demo.ipynb)|
 |K Means|[Theory and Algorithm](theory/k_means.ipynb)|[Python Implementation](pymlalgo/clustering/k_means.py)|[Demo](demo/k_means_demo.ipynb)|
+|Principal Component Analysis|[Theory and Algorithm](theory/pca.ipynb)|[Python Implementation](pymlalgo/reduction/pca.py)|[Demo](demo/pca_demo.ipynb)|
 
 ## Dependencies
 The package depends only on `numpy`. Running the demos will require additional packages such as `jupyter`, `pandas`
