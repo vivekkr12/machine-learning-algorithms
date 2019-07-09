@@ -12,8 +12,8 @@ class RidgeRegression:
         """
         Initializes and instance of RidgeRegression
 
-        :param x_train: training features of shape (d, n)
-        :param y_train: training labels of shape (d, 1)
+        :param x_train: training features of shape (n, d)
+        :param y_train: training labels of shape (n, 1)
         :param lambd: regularization parameter, default value 0.1
         :param min_grad: minimum slope to stop gradient descent, default - 0.001
         :param max_iter: maximum number if iteration - default 1000. If minimum gradient is not
@@ -23,7 +23,7 @@ class RidgeRegression:
         """
         self.logger = logging.getLogger(__name__)
 
-        self.d, self.n_train = x_train.shape
+        self.n_train, self.d = x_train.shape
 
         self.x_train = np.asarray(x_train)
         self.y_train = np.asarray(y_train)
@@ -35,11 +35,12 @@ class RidgeRegression:
         # arrays to contain costs, coefficients, and gradients after each iteration
         self.cost_history = np.zeros(max_iter)
         self.grad_magnitude_history = np.zeros(max_iter)
-        self.beta_history = np.zeros((self.d, max_iter))
+        self.w_history = np.zeros((self.d, max_iter))
 
         # initialize to an arbitrary learning rate
         self.init_learning_rate = 0.001
-        self.beta = None
+        self.w = None
+        self.n_iter = 0
 
     def __compute_initial_learning_rate__(self):
         """
@@ -48,12 +49,12 @@ class RidgeRegression:
 
         :return: initial learning rate
         """
-        eigen_values, eigen_vectors = np.linalg.eigh(np.cov(self.x_train))
-        lipschitz = np.max(eigen_values) + self.lambd
+        eigen_values = np.linalg.eigvalsh(np.cov(self.x_train.T))
+        lipschitz = eigen_values[-1] + self.lambd
         initial_learning_rate = 1 / lipschitz
         return initial_learning_rate
 
-    def backtracking(self, beta, grad, grad_magnitude, cost, alpha=0.5, gamma=0.8):
+    def backtracking(self, w, grad, grad_magnitude, cost, alpha=0.5, gamma=0.8):
         """
         Computes optimal learning rate for each iteration.
         alpha and gamma are constants and the default values
@@ -63,7 +64,7 @@ class RidgeRegression:
         calculated in the method because they are already calculated in during
         gradient descent
 
-        :param beta: coefficients after last iteration
+        :param w: weight vector after last iteration
         :param grad: grad at the given beta
         :param grad_magnitude: grad magnitude at the given beta
         :param cost: cost at the given beta
@@ -75,7 +76,7 @@ class RidgeRegression:
         condition = False
         i = 0  # Iteration counter
         while condition is False and i < self.backtracking_max_iter:
-            lhs = self.compute_cost(beta - learning_rate * grad)
+            lhs = self.compute_cost(w - learning_rate * grad)
             rhs = cost - alpha * learning_rate * grad_magnitude ** 2
             if lhs <= rhs:
                 condition = True
@@ -87,109 +88,110 @@ class RidgeRegression:
                 i += 1
         return learning_rate
 
-    def compute_cost(self, beta):
+    def compute_cost(self, w):
         """
         Computes the cost (value of objective function) for the given coefficient
 
-        :param beta: the coefficients
+        :param w: weight vector
         :return: cost
         """
-        residuals = self.y_train - self.x_train.T.dot(beta)
+        residuals = self.y_train - self.x_train.dot(w)
         least_squares = np.square(np.linalg.norm(residuals, ord=2))
-        regularization = self.lambd * np.square(np.linalg.norm(beta, ord=2))
-        return (1 / self.n_train) * least_squares - regularization
+        regularization = self.lambd * np.square(np.linalg.norm(w, ord=2))
+        return (1 / self.n_train) * least_squares + regularization
 
-    def compute_grad(self, beta):
+    def compute_grad(self, w):
         """
         Computes the gradient for the given coefficient
 
-        :param beta: the coefficients
+        :param w: weight vector
         :return: grad
         """
-        residuals = self.y_train - self.x_train.T.dot(beta)
-        least_square_grad = (-2 / self.n_train) * self.x_train.dot(residuals)
-        reg_grad = 2 * self.lambd * beta
+        residuals = self.y_train - self.x_train.dot(w)
+        least_square_grad = (-2 / self.n_train) * self.x_train.T.dot(residuals)
+        reg_grad = 2 * self.lambd * w
         return least_square_grad + reg_grad
 
-    def fast_gradient_descent(self, init_beta=None):
+    def fast_gradient_descent(self, init_w=None):
         """
         Runs accelerated gradient descent algorithm to minimize the cost. The stopping criteria is
         minimum gradient or maximum number of iterations whichever comes earlier
 
-        :param init_beta: by default the coefficients will be initialized to 0. However, if coefficients are known
+        :param init_w: by default the weights will be initialized to 0. However, if coefficients are known
                           from a similar problem they can be used to make convergence much faster.
         """
-        if init_beta is None:
+        if init_w is None:
             beta = np.zeros((self.d, 1))
             theta = np.zeros((self.d, 1))
         else:
-            beta = init_beta
-            theta = init_beta
+            beta = init_w
+            theta = init_w
 
         condition = False
-        i = 0
+        itr = 0
 
-        while condition is False and i < self.max_iter:
+        while condition is False:
 
             grad_theta = self.compute_grad(beta)
             cost = self.compute_cost(beta)
             grad_magnitude = np.linalg.norm(grad_theta, ord=2)
             learning_rate = self.backtracking(beta, grad_theta, grad_magnitude, cost)
-            self.beta_history[:, i] = beta.flatten()
-            self.cost_history[i] = cost
-            self.grad_magnitude_history[i] = grad_magnitude
+            self.w_history[:, itr] = beta.flatten()
+            self.cost_history[itr] = cost
+            self.grad_magnitude_history[itr] = grad_magnitude
 
             if grad_magnitude < self.min_grad:
                 condition = True
-            elif i >= self.max_iter:
+                self.n_iter = itr + 1
+            elif itr == self.max_iter - 1:
                 self.logger.warning('max iteration for fast gradient descent reached before condition became true')
                 condition = True
+                self.n_iter = itr + 1
             else:
-                i += 1
+                itr += 1
                 beta = theta - learning_rate * grad_theta
-                theta = beta + i / (i + 3) * (beta - self.beta_history[:, (i - 1)].reshape(self.d, 1))
+                theta = beta + itr / (itr + 3) * (beta - self.w_history[:, (itr - 1)].reshape(self.d, 1))
 
-        self.beta_history = self.beta_history[:, 0:i]
-        self.cost_history = self.cost_history[0:i]
-        self.grad_magnitude_history = self.grad_magnitude_history[0:i]
-        self.beta = beta
+        self.w_history = self.w_history[:, 0:itr]
+        self.cost_history = self.cost_history[0:itr]
+        self.grad_magnitude_history = self.grad_magnitude_history[0:itr]
+        self.w = beta
 
-    def train(self, init_beta=None):
+    def train(self, init_w=None):
         """
         Trains the model and optimizes the coefficients
 
-        :param init_beta: by default the coefficients will be initialized to 0. However, if coefficients are known
+        :param init_w: by default the coefficients will be initialized to 0. However, if coefficients are known
                           from a similar problem they can be used to make convergence much faster.
         """
         self.init_learning_rate = self.__compute_initial_learning_rate__()
-        self.fast_gradient_descent(init_beta)
+        self.fast_gradient_descent(init_w)
 
-    def predict(self, x, beta=None):
+    def predict(self, x, w=None):
         """
         Make predictions
 
-        :param x: the features dataset of shape (d, n)
-        :param beta: the coefficients. default - None. If not passed, it will use the coefficients
+        :param x: the features dataset of shape (n, d)
+        :param w: the coefficients. default - None. If not passed, it will use the coefficients
                      optimized during training
         :return: the predictions in shape (n, 1)
         """
-        n = x.shape[1]
-        if beta is None:
-            beta = self.beta
+        if w is None:
+            w = self.w
 
-        return x.T.dot(beta).reshape(n, 1)
+        return x.dot(w)
 
-    def r_squared(self, x, y, beta=None):
+    def r_squared(self, x, y, w=None):
         """
         Calculates the R Squared value (coefficient of determination). The maximum value is 1 and
         higher values indicate better accuracy of the model.
 
         :param x: features dataset
         :param y: labels dataset
-        :param beta: coefficients
+        :param w: coefficients
         :return: r squared
         """
-        predictions = self.predict(x, beta)
+        predictions = self.predict(x, w)
         total_sq_error = np.sum(np.square(y - predictions))
         total_variation_y = np.sum(np.square(y - np.mean(y)))
         r_squared = 1 - total_sq_error / total_variation_y
