@@ -138,6 +138,7 @@ class LogisticRegression:
 
     def score(self, x, y):
         """
+        Calulates mean accuracy
 
         :param x: the features dataset of shape (n, d)
         :param y: label dataset of shape (n,1)
