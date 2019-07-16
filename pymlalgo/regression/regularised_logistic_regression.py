@@ -76,10 +76,7 @@ class LogisticRegression:
         Computes optimal learning rate for each iteration.
         alpha and gamma are constants and the default values
         had proven to work well in most scenarios.
-
-        Parameters grad, grad_magnitude and cost are passed instead of being
-        calculated in the method because they are already calculated in during
-        gradient descent
+        
         :param beta:weight vector after last iteration
         :param alpha:a constant - default 0.5
         :param gamma:a constant - default 0.8
@@ -138,7 +135,7 @@ class LogisticRegression:
 
     def score(self, x, y):
         """
-        Calulates mean accuracy
+        Calculates mean accuracy
 
         :param x: the features dataset of shape (n, d)
         :param y: label dataset of shape (n,1)
