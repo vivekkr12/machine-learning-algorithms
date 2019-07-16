@@ -12,3 +12,4 @@
 .editor* text eol=lf
 .cov* text eol=lf
 .travis* text eol=lf
+MANIFEST* text eol=lf
