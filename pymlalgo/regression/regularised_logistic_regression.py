@@ -12,7 +12,7 @@ class LogisticRegression:
         :param lamd: regularization parameter, default value 0.1
         :param eps: minimum slope to stop gradient descent, default - 0.001
         :param max_iterations: maximum number if iteration - default 1000. If minimum gradient is not
-                               is not reached in max iteration, the algorithm will stop optimizing further
+                               is not reached in max iteration, the algorithm will stop optimizing.
 
         """
 
