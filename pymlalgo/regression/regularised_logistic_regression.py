@@ -5,7 +5,6 @@ import logging
 class LogisticRegression:
 
     def __init__(self, x_train, y_train, lamd, eps=0.0001, max_iterations=1000):
-
         """
         Initializes and creates a instance of l2 regularised logistic regression
 
@@ -14,7 +13,7 @@ class LogisticRegression:
         :param lamd: regularization parameter, default value 0.1
         :param eps: minimum slope to stop gradient descent, default - 0.001
         :param max_iterations: maximum number if iteration - default 1000. If minimum gradient is not
-                               is not reached in max iteration, the algorithm will stop optimizing further
+                               is not reached in max iteration, the algorithm will stop optimizing.
 
         """
 
@@ -65,6 +64,7 @@ class LogisticRegression:
         """
         Computes the initial learning rate by calculating the Lipschitz. Backtracking
         line search optimized this learning rate
+        
         :return: initial learning rate
         """
         eigenvalues, eigenvectors = np.linalg.eigh(1 / self.n_train * self.x_train.dot(self.x_train.T))
