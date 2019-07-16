@@ -7,16 +7,16 @@ class LogisticRegression:
     def __init__(self, x_train, y_train, lamd, eps=0.0001, max_iterations=1000):
 
         """
-                Initializes and creates a instance of l2 regularised logistic regression
+        Initializes and creates a instance of l2 regularised logistic regression
 
-                :param x_train: training features of shape (n, d)
-                :param y_train: training labels of shape (n, 1)
-                :param lamd: regularization parameter, default value 0.1
-                :param eps: minimum slope to stop gradient descent, default - 0.001
-                :param max_iterations: maximum number if iteration - default 1000. If minimum gradient is not
-                                 is not reached in max iteration, the algorithm will stop optimizing further
+        :param x_train: training features of shape (n, d)
+        :param y_train: training labels of shape (n, 1)
+        :param lamd: regularization parameter, default value 0.1
+        :param eps: minimum slope to stop gradient descent, default - 0.001
+        :param max_iterations: maximum number if iteration - default 1000. If minimum gradient is not
+                               is not reached in max iteration, the algorithm will stop optimizing further
 
-                """
+        """
 
         self.x_train = x_train
         self.y_train = y_train
