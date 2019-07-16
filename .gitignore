@@ -111,3 +111,4 @@ venv.bak/
 
 # Windows Files
 *Thumbs.db
+*.png
