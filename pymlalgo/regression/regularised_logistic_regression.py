@@ -4,7 +4,7 @@ import logging
 
 class LogisticRegression:
 
-    def __init__(self, x_train, y_train, lamd, eps, max_iterations=1000):
+    def __init__(self, x_train, y_train, lamd, eps=0.0001, max_iterations=1000):
 
         """
                 Initializes and creates a instance of l2 regularised logistic regression
@@ -136,7 +136,7 @@ class LogisticRegression:
         predictions = pred * 2 - 1
         return predictions
 
-    def mis_classification_error(self, x, y):
+    def score(self, x, y):
         """
 
         :param x: the features dataset of shape (n, d)
@@ -144,5 +144,5 @@ class LogisticRegression:
         :return: mis classification error
         """
         predictions = self.predict(x)
-        error = np.mean(predictions != y) * 100
+        error = np.mean(predictions == y)
         return error
