@@ -1,11 +1,9 @@
 import numpy as np
-import logging
 
 
 class LogisticRegression:
 
     def __init__(self, x_train, y_train, lamd, eps=0.0001, max_iterations=1000):
-
         """
         Initializes and creates a instance of l2 regularised logistic regression
 
@@ -65,6 +63,7 @@ class LogisticRegression:
         """
         Computes the initial learning rate by calculating the Lipschitz. Backtracking
         line search optimized this learning rate
+
         :return: initial learning rate
         """
         eigenvalues, eigenvectors = np.linalg.eigh(1 / self.n_train * self.x_train.dot(self.x_train.T))
@@ -77,9 +76,6 @@ class LogisticRegression:
         alpha and gamma are constants and the default values
         had proven to work well in most scenarios.
 
-        Parameters grad, grad_magnitude and cost are passed instead of being
-        calculated in the method because they are already calculated in during
-        gradient descent
         :param beta:weight vector after last iteration
         :param alpha:a constant - default 0.5
         :param gamma:a constant - default 0.8
@@ -138,7 +134,7 @@ class LogisticRegression:
 
     def score(self, x, y):
         """
-        Calulates mean accuracy
+        Calculates mean accuracy
 
         :param x: the features dataset of shape (n, d)
         :param y: label dataset of shape (n,1)
