@@ -1,5 +1,4 @@
 import numpy as np
-import logging
 
 
 class LogisticRegression:
@@ -64,7 +63,7 @@ class LogisticRegression:
         """
         Computes the initial learning rate by calculating the Lipschitz. Backtracking
         line search optimized this learning rate
-        
+
         :return: initial learning rate
         """
         eigenvalues, eigenvectors = np.linalg.eigh(1 / self.n_train * self.x_train.dot(self.x_train.T))
@@ -76,7 +75,7 @@ class LogisticRegression:
         Computes optimal learning rate for each iteration.
         alpha and gamma are constants and the default values
         had proven to work well in most scenarios.
-        
+
         :param beta:weight vector after last iteration
         :param alpha:a constant - default 0.5
         :param gamma:a constant - default 0.8
