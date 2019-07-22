@@ -6,6 +6,8 @@ Implementation of common machine learning algorithms from scratch in Python
 |Algorithm|Math|Implementation|Demo|
 |---------|------|--------------|----|
 |Ridge Regression|[Theory and Derivation](theory/ridge_regression.ipynb)|[Python Implementation](pymlalgo/regression/ridge_regression.py)|[Demo](demo/ridge_regression_demo.ipynb)|
+|Regularised Logistic Regression|[Theory and Derivation](theory/logistic_regression.ipynb)|[Python Implementation](pymlalgo/regression/regularised_logistic_regression.py)|[Demo](demo/regularised_logistic_regression_demo.ipynb)|
+|Lasso Regression|[Theory and Derivation](theory/lasso_regression.ipynb)|[Python Implementation](pymlalgo/regression/lasso_regression.py)|[Demo](demo/lasso_regression_demo.ipynb)|
 |K Means|[Theory and Algorithm](theory/k_means.ipynb)|[Python Implementation](pymlalgo/clustering/k_means.py)|[Demo](demo/k_means_demo.ipynb)|
 |Principal Component Analysis|[Theory and Algorithm](theory/pca.ipynb)|[Python Implementation](pymlalgo/reduction/pca.py)|[Demo](demo/pca_demo.ipynb)|
 
