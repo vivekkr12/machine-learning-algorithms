@@ -1,5 +1,7 @@
 # Machine Learning Algorithms
-[![Build Status](https://travis-ci.com/vivekkr12/machine-learning-algorithms.svg?branch=master)](https://travis-ci.com/vivekkr12/machine-learning-algorithms) [![Coverage Status](https://coveralls.io/repos/github/vivekkr12/machine-learning-algorithms/badge.svg?branch=master)](https://coveralls.io/github/vivekkr12/machine-learning-algorithms?branch=master)
+[![Build Status](https://travis-ci.com/vivekkr12/machine-learning-algorithms.svg?branch=master)](https://travis-ci.com/vivekkr12/machine-learning-algorithms)
+[![Coverage Status](https://coveralls.io/repos/github/vivekkr12/machine-learning-algorithms/badge.svg?branch=master)](https://coveralls.io/github/vivekkr12/machine-learning-algorithms?branch=master)
+[![NB Viewer](https://img.shields.io/badge/render-nbviewer-orange.svg)](https://nbviewer.jupyter.org/github/vivekkr12/machine-learning-algorithms/tree/master/)
 
 Implementation of common machine learning algorithms from scratch in Python
 
